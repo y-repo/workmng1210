@@ -15,7 +15,7 @@
 			<h2 class="form-signin-heading">ログイン</h2>
 			<input type="text" class="input-block-level" placeholder="社員コード" name="scode">
 			<input type="password" class="input-block-level" placeholder="パスワード" name="passwd">
-			<p class="text-danger">${beans.errmsg}</p>
+			<p class="text-danger">${dto.errmsg}</p>
 			<div class="control-group">
 				<button class="btn btn-large btn-primary" type="submit">ログイン</button>
 			</div>

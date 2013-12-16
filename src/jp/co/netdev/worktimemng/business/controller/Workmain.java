@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import jp.co.netdev.worktimemng.business.model.Datacheck;
+import jp.co.netdev.worktimemng.business.model.WorkDTO;
+import jp.co.netdev.worktimemng.business.service.ConnectDB;
+import jp.co.netdev.worktimemng.business.service.DataCheck;
 import jp.co.netdev.worktimemng.dao.MembersDAO;
 
 /**
@@ -43,7 +45,7 @@ public class Workmain extends HttpServlet {
 	 * @throws javax.servlet.ServletException サーブレット内の何らかのエラーが発生した場合。
 	 * @throws java.io.IOException 入出力処理でエラーが発生した場合。
 	 */
-	protected void doGet(HttpServletRequest request, 
+	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response)throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//ログアウト処理
@@ -87,35 +89,31 @@ public class Workmain extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//beansのインスタンスを取得
-		Datacheck beans = new Datacheck();
-		MembersDAO memersdao = new MembersDAO();
 
 		//セッションオブジェクトの取得
 		HttpSession session = request.getSession(true);
 
-		//フォームからたデータを取得して変数に格納
-		String scode = (String) request.getParameter("scode");
-		String password = (String) request.getParameter("passwd");
+		//各クラスのインスタンスを取得
+		WorkDTO dto = new WorkDTO();
+		MembersDAO membersdao = new MembersDAO();
+		DataCheck datacheck = new DataCheck();
+		ConnectDB connection = new ConnectDB();
 
-		//SQL実行結果の格納用
-		int result = 0;
-
-		//フォームから受け取ったデータをbeansに保存
-		beans.setScode(scode);
-		beans.setPasswd(password);
+		//社員コードとパスワードを取得し、DTOに格納
+		dto.setScode((String) request.getParameter("scode"));
+		dto.setPasswd((String) request.getParameter("passwd"));
 
 		//社員コードとパスワードの空チェック
-		beans.checkvalues();
+		datacheck.checkvalues(dto.getScode(),dto.getPasswd());
 
 		//IDとパスワードが入力されていればDBとデータを照合する
-		if (beans.getErrmsg() == null) {
+		if (dto.getErrmsg() == null) {
 			try {
 				//DBに接続
-				memersdao.getConnection();
+				connection.getConnection();
 
 				//ユーザ情報をDBに問い合わせ、結果を格納する
-				result = memersdao.memberSerch(scode, password);
+				dto.setResult(membersdao.memberSerch(dto.getScode(), dto.getPasswd()));
 
 			} catch (Exception e) {
 				// TODO 自動生成された catch ブロック
@@ -123,20 +121,20 @@ public class Workmain extends HttpServlet {
 			}
 		}
 
-		//セッションにbeansオブジェクトを保存
-		session.setAttribute("beans", beans);
+		//セッションにdtoを格納
+		session.setAttribute("dto", dto);
 
 		//ユーザがDBに登録されているか確認
-		if (result > 0 && beans.getErrmsg() == null) {
+		if (dto.getResult() > 0 && dto.getErrmsg() == null) {
 			//サーブレットからメニュー画面へフォワード
 			RequestDispatcher rd = request.getRequestDispatcher("./menu.jsp");
 			rd.forward(request, response);
-		} else if (result == 0 && beans.getErrmsg() == null) {
+		} else if (dto.getResult() == 0 && dto.getErrmsg() == null) {
 			//社員コードかパスワードが間違っていたら、エラーメッセージを格納してログイン画面に戻す。
-			beans.setErrmsg("IDまたはパスワードが違います。");
+			dto.setErrmsg("IDまたはパスワードが違います。");
 			RequestDispatcher rd = request.getRequestDispatcher("./index.jsp");
 			rd.forward(request, response);
-		} else if (beans.getErrmsg() != null) {
+		} else if (dto.getErrmsg() != null) {
 			//beans側でエラーメッセージが格納されていれば、ログイン画面にそのまま戻す
 			RequestDispatcher rd = request.getRequestDispatcher("./index.jsp");
 			rd.forward(request, response);
