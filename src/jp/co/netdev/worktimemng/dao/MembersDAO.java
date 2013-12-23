@@ -3,14 +3,14 @@ package jp.co.netdev.worktimemng.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import jp.co.netdev.worktimemng.business.service.ConnectDB;
+import jp.co.netdev.worktimemng.business.service.WorkService;
 
 /**
  * データベースのテーブルへのアクセスを行うクラス。
  * @author yoshi.
  *
  */
-public class MembersDAO extends ConnectDB {
+public class MembersDAO extends WorkService {
 
 	/**
 	 * @param scode ログイン画面で入力された社員コード。
@@ -25,7 +25,7 @@ public class MembersDAO extends ConnectDB {
 				    + "where scode = ? and password = ?";
 
 		//ステートメント（SQLを取得・実行するコンテナ）を取得
-		PreparedStatement statement = getConnection().prepareStatement(sql);
+		PreparedStatement statement = connection.prepareStatement(sql);
 
 		//PreparedStatementのプレースホルダーに社員コードとパスワードを順に格納する。
 		statement.setString(1, scode);
@@ -41,9 +41,6 @@ public class MembersDAO extends ConnectDB {
 
 		rs.close();
 		statement.close();
-
-		//DBとの接続を切断
-		closeConnection();
 
 		return result;
 	}
