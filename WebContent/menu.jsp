@@ -14,14 +14,14 @@
 				<a class="navbar-brand"><b>勤怠管理システム</b></a>
 			</div>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="./Workmain?logoutflg=1">ログアウト</a></li>
+				<li><a href="./LogoutServlet">ログアウト</a></li>
 			</ul>
 		</nav>
 		<div class="container" style="padding:50px 0">
 			<h1 class="page-header">メインメニュー</h1>
 			<div class="row" style="padding:20px">
 				<div class="col-sm-6">
-					<a href="./main.jsp" class="btn btn-large btn-block btn-primary">勤務表</a>
+					<a href="./WorktimeMainServlet" class="btn btn-large btn-block btn-primary">勤務表</a>
 				</div>
 				<div class="col-sm-6">
 					<a href="" class="btn btn-large btn-block btn-primary">掲示板</a>
@@ -35,7 +35,7 @@
 					<a href="" class="btn btn-large btn-block btn-primary">予備2</a>
 				</div>
 			</div>
-		</div>		
+		</div>
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 </body>

@@ -15,10 +15,12 @@
 		<a class="navbar-brand"><b>勤怠管理システム</b></a>
 	</div>
 	<ul class="nav navbar-nav">
-		<li><a href="./Workmain?menuflg=1">メインメニュー</a></li>
+		<li>
+			<a href="./MenuServlet">メインメニュー</a>
+		</li>
 	</ul>
 	<ul class="nav navbar-nav navbar-right">
-		<li><a href="./Workmain?logoutflg=1">ログアウト</a></li>
+		<li><a href="./LogoutServlet">ログアウト</a></li>
 	</ul>
 	</nav>
 	<div class="container" style="padding: 50px">

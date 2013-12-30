@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div class="container" class="well">
-		<form class="form-signin" action="./Workmain" method="post">
+		<form class="form-signin" action="./LoginServlet" method="post">
 			<h2 class="form-signin-heading">ログイン</h2>
 			<input type="text" class="input-block-level" placeholder="社員コード" name="scode">
 			<input type="password" class="input-block-level" placeholder="パスワード" name="passwd">

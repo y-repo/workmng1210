@@ -1,16 +1,22 @@
 package jp.co.netdev.worktimemng.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import jp.co.netdev.worktimemng.business.service.WorkService;
 
 /**
  * データベースのテーブルへのアクセスを行うクラス。
  * @author yoshi.
  *
  */
-public class MembersDAO extends WorkService {
+public class MembersDAO {
+
+	Connection connection = null;
+
+	public MembersDAO(Connection connection) {
+		super();
+		this.connection = connection;
+	}
 
 	/**
 	 * @param scode ログイン画面で入力された社員コード。
