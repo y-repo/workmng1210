@@ -1,6 +1,8 @@
 package jp.co.netdev.worktimemng.business.service;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.util.Properties;
 
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -10,9 +12,10 @@ import jp.co.netdev.worktimemng.dao.MembersDAO;
 
 public class LoginService {
 	public Connection connection = null;
+	private Properties prop = null;
 	WorkDTO dto;
 
-	public LoginService(WorkDTO dto) {
+	public LoginService(WorkDTO dto) throws IOException{
 		super();
 		this.dto = dto;
 	}
@@ -24,9 +27,13 @@ public class LoginService {
 				//JNDI参照コンテキスト取得
 				InitialContext initCtx = new InitialContext();
 
+				//プロパティファイルを取得
+				prop = new Properties();
+				prop.load(this.getClass().getResourceAsStream("dbconname.properties"));
+
 				//Tomcatで管理されたデータベース接続をJNDI経由で取得
 				DataSource ds
-					= (DataSource) initCtx.lookup("java:comp/env/localDB");
+					= (DataSource) initCtx.lookup(prop.getProperty("dbname"));
 
 				//データベース接続を取得
 				connection = ds.getConnection();
